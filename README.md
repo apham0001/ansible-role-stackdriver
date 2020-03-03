@@ -75,4 +75,4 @@ Example Playbook
 License
 -------
 
-BSD
+BSD / MIT

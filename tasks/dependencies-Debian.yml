@@ -8,4 +8,4 @@
   package:
     name: libmariadbclient18
     state: present
-  when: stackdriver_mysql_conf.stat.exists == True
+  when: stackdriver_mysql_conf.stat.exists

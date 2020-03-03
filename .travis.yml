@@ -2,6 +2,10 @@
 language: python
 python: "2.7"
 
+env:
+  global:
+    - ROLE_NAME: stackdriver
+
 # Use the new container infrastructure
 sudo: false
 
@@ -20,6 +24,12 @@ install:
 
   # Create ansible.cfg with correct roles_path
   - printf '[defaults]\nroles_path=../' >ansible.cfg
+
+before_script:
+  - cd ../
+  - mv ansible-role-$ROLE_NAME apham0001.$ROLE_NAME
+  - cd apham0001.$ROLE_NAME
+  - touch tests/application_default_credentials.json
 
 script:
   # Basic role syntax check

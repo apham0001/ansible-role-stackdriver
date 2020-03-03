@@ -1,0 +1,12 @@
+---
+# install stackdriver
+ - name: "install stackdriver"
+   hosts: localhost
+   become: true
+
+   vars:
+     google_auth_source: "tests/application_default_credentials.json"
+     stackdriver_plugins:
+       - apache
+   roles:
+     - apham0001.stackdriver
