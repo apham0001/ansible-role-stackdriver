@@ -1,0 +1,19 @@
+# This is the monitoring configuration for MySQL.
+# NOTE: This configuration needs to be hand-edited in order to work.
+# Look for DATABASE_NAME, STATS_USER, STATS_PASS, MYSQL_HOST and MYSQL_PORT to adjust your configuration file.
+LoadPlugin mysql
+<Plugin "mysql">
+    # Each database needs a separate Database section.
+    # Replace DATABASE_NAME in the Database section with the name of the database.
+    <Database "DATABASE_NAME">
+        # When using non-standard MySQL configurations, replace the below with
+        #Host "MYSQL_HOST"
+        #Port "MYSQL_PORT"
+        Host "{{ stackdriver_mysql_host | default('localhost') }}"
+        Port {{ stackdriver_mysql_port | default('3306') }}"
+        User "{{ stackdriver_mysql_user | default('stats') }}"
+        Password "{{ stackdriver_mysql_password }}"
+        MasterStats true
+        SlaveStats true
+    </Database>
+</Plugin>

@@ -1,0 +1,45 @@
+---
+- name: Stat Google credentials file.
+  stat:
+    path: "{{ stackdriver_plugins_dir }}/{{  google_auth_name }}"
+  register: google_auth
+
+- name: Stat Stackdriver binary.
+  stat:
+    path: "{{ stackdriver_binary }}"
+  register: stackdriver_binary_file
+
+- name: Create Google auth dir.
+  file:
+    path: "{{ google_auth_dir }}"
+    state: directory
+    mode: '0755'
+  when: google_auth.stat.exists == false
+
+- name: Copy Google credentials.
+  copy:
+    src: "{{ google_auth_source }}"
+    dest: "{{ google_auth_dir }}/{{ google_auth_name }}"
+    owner: root
+    group: root
+    mode: '0400'
+  when: google_auth.stat.exists == false
+
+- name: Download monitoring agent.
+  get_url:
+    url: "https://dl.google.com/cloudagents/install-monitoring-agent.sh"
+    dest: "/tmp/install-monitoring-agent.sh"
+    mode: '0755'
+  when: stackdriver_binary_file.stat.exists == false
+
+- name: Install monitoring agent.
+  command: ./install-monitoring-agent.sh
+  args:
+    chdir: /tmp
+  when: stackdriver_binary_file.stat.exists == false
+ 
+- name: Configure monitoring.
+  include_tasks: configure.yml
+
+- name: install dependencies.
+  include_tasks: dependencies-{{ ansible_os_family }}.yml

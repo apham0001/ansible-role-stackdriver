@@ -1,0 +1,9 @@
+---
+- name: Configure plugin stackdriver.
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "{{ stackdriver_plugins_dir }}/{{ item }}.conf"
+    owner: "root"
+    group: "root"
+    mode: '0644'
+  with_items: "{{ stackdriver_plugins }}"

@@ -1,0 +1,8 @@
+---
+google_auth_dir: "/etc/google/auth"
+google_auth_name: "application_default_credentials.json"
+google_auth_source: "credentials/application_default_credentials.json"
+
+stackdriver_plugins_dir: "/opt/stackdriver/collectd/etc/collectd.d"
+
+stackdriver_binary: "/opt/stackdriver/collectd/bin/stackdriver-collectdctl"

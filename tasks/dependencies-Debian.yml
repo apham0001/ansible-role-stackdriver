@@ -1,0 +1,11 @@
+---
+- name: Stat mysql.conf.
+  stat:
+    path: "{{ stackdriver_plugins_dir }}/mysql.conf"
+  register: stackdriver_mysql_conf
+
+- name: install dependency for mysql.conf.
+  package:
+    name: libmariadbclient18
+    state: present
+  when: stackdriver_mysql_conf.stat.exists == True
