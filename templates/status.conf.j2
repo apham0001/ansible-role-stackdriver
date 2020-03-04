@@ -1,0 +1,10 @@
+ExtendedStatus on
+<VirtualHost {{ stackdriver_apache_host | default('local-stackdriver-agent.stackdriver.com') }}:{{ stackdriver_apache_port | default('80') }}>
+    ServerName {{ stackdriver_apache_host | default('local-stackdriver-agent.stackdriver.com') }}
+    <Location /server-status>
+        SetHandler server-status
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.1
+    </Location>
+</VirtualHost>

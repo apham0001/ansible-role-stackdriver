@@ -1,7 +1,7 @@
 ---
 - name: Stat Google credentials file.
   stat:
-    path: "{{ stackdriver_plugins_dir }}/{{  google_auth_name }}"
+    path: "{{ google_auth_dir }}/{{  google_auth_name }}"
   register: google_auth
 
 - name: Stat Stackdriver binary.
@@ -14,7 +14,7 @@
     path: "{{ google_auth_dir }}"
     state: directory
     mode: '0755'
-  when: google_auth.stat.exists
+  when: not google_auth.stat.exists
 
 - name: Copy Google credentials.
   copy:
@@ -23,20 +23,20 @@
     owner: root
     group: root
     mode: '0400'
-  when: google_auth.stat.exists
+  when: not google_auth.stat.exists
 
 - name: Download monitoring agent.
   get_url:
     url: "https://dl.google.com/cloudagents/install-monitoring-agent.sh"
     dest: "/tmp/install-monitoring-agent.sh"
     mode: '0755'
-  when: stackdriver_binary_file.stat.exists
+  when: not stackdriver_binary_file.stat.exists
 
 - name: Install monitoring agent.
   command: ./install-monitoring-agent.sh
   args:
     chdir: /tmp
-  when: stackdriver_binary_file.stat.exists
+  when: not stackdriver_binary_file.stat.exists
 
 - name: Configure monitoring.
   include_tasks: configure.yml

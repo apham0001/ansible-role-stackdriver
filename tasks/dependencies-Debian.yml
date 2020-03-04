@@ -9,3 +9,17 @@
     name: libmariadbclient18
     state: present
   when: stackdriver_mysql_conf.stat.exists
+
+- name: Add status vhost in Apache.
+  template:
+    src: "status.conf.j2"
+    dest: "{{ apache_sites_available }}/status.conf"
+    owner: "root"
+    group: "root"
+    mode: '0644'
+
+- name: Enable status vhost.
+  file:
+    src: "{{ apache_sites_available }}/status.conf"
+    dest: "{{ apache_sites_enabled }}/status.conf"
+    state: link
