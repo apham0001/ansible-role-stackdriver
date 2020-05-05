@@ -7,3 +7,4 @@
     group: "root"
     mode: '0644'
   with_items: "{{ stackdriver_plugins }}"
+  when: stackdriver_plugins is defined

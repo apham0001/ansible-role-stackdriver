@@ -4,6 +4,11 @@
     path: "{{ stackdriver_plugins_dir }}/mysql.conf"
   register: stackdriver_mysql_conf
 
+- name: Stat apache.conf.
+  stat:
+    path: "{{ stackdriver_plugins_dir }}/apache.conf"
+  register: stackdriver_apache_conf
+
 - name: install dependency for mysql.conf.
   package:
     name: libmariadbclient18
@@ -17,9 +22,11 @@
     owner: "root"
     group: "root"
     mode: '0644'
+  when: stackdriver_apache_conf.stat.exists
 
 - name: Enable status vhost.
   file:
     src: "{{ apache_sites_available }}/status.conf"
     dest: "{{ apache_sites_enabled }}/status.conf"
     state: link
+  when: stackdriver_apache_conf.stat.exists
